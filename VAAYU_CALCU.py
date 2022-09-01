@@ -1,11 +1,3 @@
-key = "y"
-key_2 = "NO"
-key_3 = "NO"
-key_1 = "NEW"
-c = " "
-out = 0
-
-
 def calc_sum(x, y):
     return x + y
 
@@ -19,7 +11,7 @@ def calc_quo(x, y):
         quo = x/y
         return quo
     except ZeroDivisionError:
-        print("Youre trying to divide by zero")
+        print("You're trying to divide by zero")
         return "NA"
 
 
@@ -39,11 +31,13 @@ def calc_mod(x, y):
 
 
 def calc_percent(x, y):
+    x = int(x)
     percent = (x / 100) * y
     return percent
 
 
 def is_prime(x):
+    x = int(x)
     flag = False
     for i in range(2, x):
         if (x % i) == 0:
@@ -56,19 +50,29 @@ def is_prime(x):
 
 
 out = 0
+key = "y"
+key_2 = "NO"
+key_3 = "NO"
+key_1 = "NEW"
+c = " "
 while True:
     if key_1 == "NEW":
         a = int(input("Enter the 1st operand: \n"))
         print("Which operation would you like to perform?")
         c = input("addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
+        key_1 = "NEW"
+    if key_2 == "ANS":
+        a = out
+        print(f"the 1st operand is : {a}")
+        print("Which operation would you like to perform?")
+        c = input("addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
+        key_2 = "NO"
     if key_3 == "SAME":
         print("Which operation would you like to perform?")
-        c = input(" meow 1 addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
+        c = input("addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
+        key_3 = "NO"
     c = c.lower()
-    if key_2 == "ANSWER":
-        a = out
-        print("Which operation would you like to perform?")
-        c = input(" meow 2 addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
+
     if c == "+":
         b = int(input("Enter the 2nd operand: \n"))
         out = calc_sum(a, b)
@@ -106,12 +110,13 @@ while True:
         key_1 = input("If you want to start the run a-fresh enter NEW/NO")
         key_1 = key_1.upper()
         if key_1 != "NEW":
-            key_2 = input("if you want to run the calculator with the answer from the last run enter ANSWER/NO \n")
-            if key_2 == "ANSWER":
-                key_2 = key_2.upper()
-            else:
+            print(key_1)
+            key_2 = input("if you want to run the calculator with the answer from the last run enter ANS/NO \n")
+            key_2 = key_2.upper()
+            print(key_2)
+            if key_2 != "ANS":
                 key_3 = input("if you want to run the calculator with the same values and a different operation enter SAME/NO \n")
-                key_3 = key_3.upper()
+            key_3 = key_3.upper()
         continue
     else:
         break
