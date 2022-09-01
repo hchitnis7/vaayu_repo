@@ -15,7 +15,12 @@ def calc_diff(x, y):
 
 
 def calc_quo(x, y):
-    return x / y
+    try:
+        quo = x/y
+        return quo
+    except ZeroDivisionError:
+        print("Youre trying to divide by zero")
+        return "NA"
 
 
 def calc_prod(x, y):
@@ -23,7 +28,14 @@ def calc_prod(x, y):
 
 
 def calc_mod(x, y):
-    return x % y
+    try:
+        rem = x % y
+
+    except ZeroDivisionError:
+        print("Youre trying to divide by zero")
+        return "NA"
+    else:
+        return rem
 
 
 def calc_percent(x, y):
@@ -43,12 +55,13 @@ def is_prime(x):
         return True
 
 
+out = 0
 while True:
     if key_1 == "NEW":
         a = int(input("Enter the 1st operand: \n"))
         print("Which operation would you like to perform?")
         c = input("addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
-    if key_2 == "SAME":
+    if key_3 == "SAME":
         print("Which operation would you like to perform?")
         c = input(" meow 1 addition: + \nsubtraction: - \ndivision: / \nmultiplication: * \nmodulus: mod \npercentage: % \nprime number check: prime \n")
     c = c.lower()
@@ -67,15 +80,15 @@ while True:
     elif c == "*":
         b = int(input("Enter the 2nd operand: \n"))
         out = calc_prod(a, b)
-        print("The difference of the two numbers is: ", out)
+        print("The product of the two numbers is: ", out)
     elif c == "/":
         b = int(input("Enter the 2nd operand: \n"))
         out = calc_quo(a, b)
-        print("The difference of the two numbers is: ", out)
+        print("The quotient of the division is: ", out)
     elif c == "mod":
         b = int(input("Enter the 2nd operand: \n"))
         out = calc_mod(a, b)
-        print("The difference of the two numbers is: ", out)
+        print("The remainder of the division is: ", out)
     elif c == "%":
         b = int(input("Enter the 2nd operand: \n"))
         per = calc_percent(a, b)
