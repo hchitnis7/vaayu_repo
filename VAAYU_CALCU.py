@@ -127,7 +127,7 @@ while True:
             if key_3 != "SAME":
                 msg = f"{key} -> {key_1} -> {key_2} -> {key_3}"
                 print(f"illogical input: {msg} \n bye bye")
-                break;
+                break
         continue
     else:
         print("bye bye")
