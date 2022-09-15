@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-key
+key = 0
 cap = cv2.VideoCapture(1)
 print("Which colour do you want to display?")
 colour = int(input("1 = red \n2:blue\n3: green\n4:yellow\n5:orange\n6:all but white"))
