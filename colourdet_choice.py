@@ -18,7 +18,7 @@ while True:
         contours, heirarchy = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
-                if cv2.contourArea(contour) > 50:
+                if cv2.contourArea(contour) > 500:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
@@ -74,7 +74,7 @@ while True:
         contours, heirarchy = cv2.findContours(orange_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
-                if cv2.contourArea(contour) > 600:
+                if cv2.contourArea(contour) > 500:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)

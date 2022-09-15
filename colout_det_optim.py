@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 colour_ranges = {"RED":[[140, 85, 110], [348, 255, 255]],
-          "GREEN":[[94, 80, 2],[126, 255, 255]],
-          "BLUE":[[50, 52, 50],[85, 255, 255]],
-          "YELLOW":[[15, 40, 50],[40, 255, 255]],
-          "ORANGE":[[10, 100, 20],[25, 255, 255]]}
+          "BLUE" : [[94, 80, 2], [126, 255, 255]],
+          "GREEN" : [[50, 52, 50], [85, 255, 255]],
+          "YELLOW" : [[15, 40, 50], [40, 255, 255]],
+          "ORANGE" : [[10, 100, 20], [25, 255, 255]]}
 def colour_det(colour_in):
     cap = cv2.VideoCapture(1)
     coul_name = colour_ranges[colour_in]
