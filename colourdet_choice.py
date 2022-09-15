@@ -3,7 +3,7 @@ import numpy as np
 
 cap = cv2.VideoCapture(1)
 print("Which colour do you want to display?")
-colour = int(input("1 = red \n2:blue\n3: green\n4:yellow\n5:all but white"))
+colour = int(input("1 = red \n2:blue\n3: green\n4:yellow\n5:orange \n6:colour mask"))
 
 while True:
     _, frame = cap.read()
@@ -18,7 +18,7 @@ while True:
         contours, heirarchy = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
-                if cv2.contourArea(contour) > 500:
+                if cv2.contourArea(contour) > 50:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
@@ -67,14 +67,14 @@ while True:
         cv2.imshow("yellow mask", yellow)
     elif colour == 5:
         # orange
-        low_orange = np.array([10, 70, 100])
-        high_orange = np.array([20, 255, 255])
+        low_orange = np.array([10, 100, 20])
+        high_orange = np.array([25, 255, 255])
         orange_mask = cv2.inRange(hsv_frame, low_orange, high_orange)
         orange = cv2.bitwise_and(frame, frame, mask=orange_mask)
         contours, heirarchy = cv2.findContours(orange_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
-                if cv2.contourArea(contour) > 500:
+                if cv2.contourArea(contour) > 600:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
@@ -83,16 +83,17 @@ while True:
         # all but white
         low = np.array([0, 42, 0])
         high = np.array([255, 255, 255])
-        mask = cv2.inRange(hsv_frame, low, high)
-        mask_ = cv2.bitwise_and(frame, frame, mask=mask)
-        contours, heirarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        mask_col = cv2.inRange(hsv_frame, low, high)
+        #contours, heirarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        if len(contours) != 0:
-            for contour in contours:
-                if cv2.contourArea(contour) > 500:
-                    x, y, w, h = cv2.boundingRect(contour)
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+        #if len(contours) != 0:
+         #   for contour in contours:
+          #      if cv2.contourArea(contour) > 500:
+           #         x, y, w, h = cv2.boundingRect(contour)
+            #        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+        mask_ = cv2.bitwise_and(frame, frame, mask=mask_col)
+
         cv2.imshow("Frame", frame)
-        cv2.imshow("white minus", mask)
+        cv2.imshow("white minus", mask_)
     if key == 27:
         break
