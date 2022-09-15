@@ -9,10 +9,16 @@ while True:
     _, frame = cap.read()
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #red
-    low_red = np.array([130, 85, 110])
+    low_red = np.array([140, 85, 110])
     high_red = np.array([348, 255, 255])
     red_mask = cv2.inRange(hsv_frame, low_red, high_red)
     red = cv2.bitwise_and(frame, frame, mask = red_mask)
+    contours, heirarchy = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x,y,w,h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x,y), (w, h), (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
     cv2.imshow("Red mask", red)
     #blue
@@ -20,6 +26,12 @@ while True:
     high_blue = np.array([126, 255, 255])
     blue_mask = cv2.inRange(hsv_frame, low_blue, high_blue)
     blue = cv2.bitwise_and(frame, frame, mask=blue_mask)
+    contours, heirarchy = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x,y,w,h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x,y), (w, h), (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
     cv2.imshow("Blue mask", blue)
     # green
@@ -41,7 +53,6 @@ while True:
     yellow_mask = cv2.inRange(hsv_frame, low_yellow, high_yellow)
     yellow = cv2.bitwise_and(frame, frame, mask=yellow_mask)
     cv2.imshow("Frame", frame)
-
     contours, heirarchy = cv2.findContours(yellow_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if len(contours) != 0:
         for contour in contours:
@@ -50,10 +61,16 @@ while True:
                 cv2.rectangle(frame, (x,y), (w, h), (0, 0, 255), 3)
     cv2.imshow("yellow mask", yellow)
     # orange
-    low_orange = np.array([10, 90, 72])
-    high_orange = np.array([18, 255, 255])
+    low_orange = np.array([20, 75, 995])
+    high_orange = np.array([30, 255, 255])
     orange_mask = cv2.inRange(hsv_frame, low_orange, high_orange)
-    orange = cv2.bitwise_and(frame, frame, mask=yellow_mask)
+    orange = cv2.bitwise_and(frame, frame, mask=orange_mask)
+    contours, heirarchy = cv2.findContours(orange_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x,y,w,h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x,y), (w, h), (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
     cv2.imshow("orange mask", orange)
     key = cv2.waitKey(1)
@@ -61,8 +78,15 @@ while True:
     low= np.array([0, 42, 0])
     high = np.array([255, 255, 255])
     mask = cv2.inRange(hsv_frame, low, high)
-    mask = cv2.bitwise_and(frame, frame, mask=mask)
+    mask_ = cv2.bitwise_and(frame, frame, mask=mask)
+    contours, heirarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x,y,w,h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x,y), (w, h), (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
-    cv2.imshow("white mask", mask)
+    cv2.imshow("white minus", mask)
     if key == 27:
         break
