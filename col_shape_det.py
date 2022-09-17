@@ -14,16 +14,16 @@ def colour_det(colour_in):
         key = cv2.waitKey(1)
         _, frame = cap.read()
         output_frame = frame.copy()
-        lab_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
-        lab_frame = cv2.medianBlur(lab_frame, 3)
+        HSV_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        HSV_frame = cv2.medianBlur(HSV_frame, 3)
         #frame_lab = cv2.inRange(lab_frame, np.array([20, 115, 70]), np.array([255, 145, 120]))
-        frame_lab = cv2.inRange(lab_frame, low_bound, high_bound)
+        frame_lab = cv2.inRange(HSV_frame, low_bound, high_bound)
         frame_gaussian = cv2.GaussianBlur(frame_lab, (5, 5), 2, 2)
         circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8,
                                    param1=100, param2=18, minRadius=5, maxRadius=60)
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
-            cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 255, 0),
+            cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0),
                        thickness=2)
         cv2.imshow("detected circles", output_frame)
         cv2.imshow("Frame", frame)
