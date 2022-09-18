@@ -6,6 +6,7 @@ colour_ranges = {"RED":[[140, 85, 110], [348, 255, 255]],
           "YELLOW" : [[15, 40, 50], [40, 255, 255]],
           "ORANGE" : [[10, 100, 20], [25, 255, 255]]}
 def colour_det(colour_in):
+    radius = 0
     cap = cv2.VideoCapture(1)
     coul_name = colour_ranges[colour_in]
     low_bound = np.array(coul_name[0])
@@ -20,11 +21,12 @@ def colour_det(colour_in):
         frame_lab = cv2.inRange(HSV_frame, low_bound, high_bound)
         frame_gaussian = cv2.GaussianBlur(frame_lab, (5, 5), 2, 2)
         circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8,
-                                   param1=100, param2=18, minRadius=5, maxRadius=60)
+                                   param1=100, param2=18, minRadius=10, maxRadius=100)
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
-            cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0),
-                       thickness=2)
+            cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
+            cv2.putText(output_frame, 'Diameter : ' + str(2 * circles[0, 2]), (20, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
+
         cv2.imshow("detected circles", output_frame)
         cv2.imshow("Frame", frame)
         if key == 27:
