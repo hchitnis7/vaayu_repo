@@ -17,11 +17,26 @@ def colour_det(colour_in):
         output_frame = frame.copy()
         HSV_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         HSV_frame = cv2.medianBlur(HSV_frame, 3)
-        #frame_lab = cv2.inRange(lab_frame, np.array([20, 115, 70]), np.array([255, 145, 120]))
-        frame_lab = cv2.inRange(HSV_frame, low_bound, high_bound)
-        frame_gaussian = cv2.GaussianBlur(frame_lab, (5, 5), 2, 2)
-        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8,
-                                   param1=100, param2=18, minRadius=10, maxRadius=100)
+        #colour_mask = cv2.inRange(HSV_frame, low_bound, high_bound)
+        colour_mask = cv2.inRange(HSV_frame, low_bound, high_bound)
+        frame_gaussian = cv2.GaussianBlur(colour_mask, (5, 5), 2, 2)
+        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+        contours, heirarchy = cv2.findContours(colour_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if len(contours) != 0:
+            for contour in contours:
+                if cv2.contourArea(contour) > 500:
+                    x, y, w, h = cv2.boundingRect(contour)
+                    #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+                    pts1 = np.float32([[x, y], [x + w, y], [x, y + h], [x + w, y + h]])
+                    pts2 = np.float32([[0, 0], [250, 0], [0, 250], [250, 250]])
+                    M = cv2.getPerspectiveTransform(pts1, pts2)
+                    dst = cv2.warpPerspective(HSV_frame, M, (300, 300))
+                    cv2.imshow("", dst)
+                    mask = cv2.inRange(dst, low_bound, high_bound)
+                    dst = cv2.cvtColor(dst, cv2.COLOR_HSV2BGR)
+                    meow = cv2.bitwise_and(dst, dst, mask=mask)
+                    cv2.imshow("test", meow)
+
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
             cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)

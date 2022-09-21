@@ -6,7 +6,7 @@ colour_ranges = {"RED":[[140, 85, 110], [348, 255, 255]],
           "YELLOW" : [[15, 40, 50], [40, 255, 255]],
           "ORANGE" : [[10, 100, 20], [25, 255, 255]]}
 def colour_det(colour_in):
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(2)
     coul_name = colour_ranges[colour_in]
     low_bound = np.array(coul_name[0])
     high_bound = np.array(coul_name[1])
@@ -19,7 +19,7 @@ def colour_det(colour_in):
         contours, heirarchy = cv2.findContours(colour_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
-                if cv2.contourArea(contour) > 800:
+                if cv2.contourArea(contour) > 500:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
         cv2.imshow("detected circles", frame)
