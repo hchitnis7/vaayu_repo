@@ -6,7 +6,7 @@ colour_ranges = {"RED":[[140, 85, 110], [348, 255, 255]],
           "YELLOW" : [[15, 40, 50], [40, 255, 255]],
           "ORANGE" : [[10, 100, 20], [25, 255, 255]]}
 def colour_det(colour_in):
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(1)
     coul_name = colour_ranges[colour_in]
     low_bound = np.array(coul_name[0])
     high_bound = np.array(coul_name[1])
