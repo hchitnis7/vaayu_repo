@@ -7,7 +7,7 @@ colour = int(input("1 = red \n2:blue\n3: green\n4:yellow\n5:orange \n6:colour ma
 
 while True:
     _, frame = cap.read()
-    key = cv2.waitKey(1)
+    key = cv2.waitKey(0)
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #red
     if colour == 1:
