@@ -84,8 +84,8 @@ while True:
         cv2.imshow("yellow mask", yellow)
     elif colour == 5:
         # orange
-        low_orange = np.array([11, 90, 20])
-        high_orange = np.array([20, 255, 255])
+        low_orange = np.array([9, 90, 90])
+        high_orange = np.array([25, 255, 255])
         orange_mask = cv2.inRange(hsv_frame, low_orange, high_orange)
         orange = cv2.bitwise_and(frame, frame, mask=orange_mask)
         contours, heirarchy = cv2.findContours(orange_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
