@@ -19,12 +19,34 @@ while True:
         red_mask_2 = cv2.inRange(hsv_frame, low_red_1, high_red_1)
         full_red = red_mask + red_mask_2
         red = cv2.bitwise_and(frame, frame, mask=full_red)
+        hsv_frame = cv2.medianBlur(hsv_frame, 3)
+        frame_lab = cv2.inRange(hsv_frame, red_mask, red_mask_2)
+        frame_gaussian = cv2.GaussianBlur(frame_lab, (5, 5), 2, 2)
+        # circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, 30, param1=80, param2=53, minRadius=10,
+                                   maxRadius=0)
+
+        if circles is not None:
+            circles = np.round(circles[0, :]).astype("int")
+            cv2.circle(output_frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0),
+                       thickness=2)
+            cv2.putText(output_frame, 'Diameter : ' + str(2 * circles[0, 2]), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5,
+                        (0, 0, 0))
+
+        cv2.imshow("detected circles", output_frame)
         contours, heirarchy = cv2.findContours(full_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
                 if cv2.contourArea(contour) > 500:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 3)
+        cv2.imshow("detected circles", frame)
+        cv2.line(frame, (width // 2, 0), (width // 2, height), (255, 0, 0), 1, 1)
+        cv2.line(frame, (0, height // 2), (width, height // 2), (255, 0, 0), 1, 1)
+        M = cv2.moments(circles)
+        cX = int(M["m10"] / M["m00"])
+        cY = int(M["m01"] / M["m00"])
+        cv2.circle(frame, (cX, cY), 5, (255, 255, 255), -1)
         """cv2.imshow("Frame", frame)
         cv2.imshow("Red mask_high range", red)
         low_red_1 = np.array([0, 85, 110])

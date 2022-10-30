@@ -35,8 +35,6 @@ def roll():
         move_servo(angle1, angle1-90)
 
 
-
-
 def pitchup():
     move_servo(0,0)
     angle1 = int(input("Enter the angle: "))
