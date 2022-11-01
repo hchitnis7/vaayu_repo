@@ -6,7 +6,7 @@ import numpy as np
 # width,height = pyautogui.size()
 cap = cv2.VideoCapture(1)
 
-colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [9, 255, 255]],
+colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [7, 255, 255]],
                  "BLUE": [[94, 80, 2], [126, 255, 255], [0, 0, 0], [0, 0, 0]],
                  "GREEN": [[49, 30, 45], [85, 255, 255], [0, 0, 0], [0, 0, 0]],
                  "YELLOW": [[15, 40, 50], [40, 255, 255], [0, 0, 0], [0, 0, 0]],
@@ -110,17 +110,18 @@ def grid(col):
             for contour in contours:
                 if cv2.contourArea(contour) > 10:
                     x, y, w, h = cv2.boundingRect(contour)
-                    x = x + 10
+                    """x = x + 10
                     y = y + 10
                     w = w + 10
-                    h = h + 10
-                    # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+                    h = h + 10"""
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
                     pts1 = np.float32([[x, y], [x + w, y], [x, y + h], [x + w, y + h]])
                     pts2 = np.float32([[0, 0], [250, 0], [0, 250], [250, 250]])
                     M = cv2.getPerspectiveTransform(pts1, pts2)
                     dst = cv2.warpPerspective(HSV_frame, M, (300, 300))
+                    DST_BGR = cv2.cvtColor(dst, cv2.COLOR_HSV2BGR)
 
-                    cv2.imshow("", dst)
+                    cv2.imshow("", DST_BGR)
         cv2.imshow("Frame", frame)
         cv2.imshow("Output", output_frame)
         if key == 27:
