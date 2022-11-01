@@ -19,8 +19,8 @@ def colour_det(colour_in):
         HSV_frame = cv2.medianBlur(HSV_frame, 3)
         frame_lab = cv2.inRange(HSV_frame, low_bound, high_bound)
         frame_gaussian = cv2.GaussianBlur(frame_lab, (5, 5), 2, 2)
-        #circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
-        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, 30 , param1=80, param2=53, minRadius=10, maxRadius=0)
+        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+        #circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, 30 , param1=80, param2=53, minRadius=10, maxRadius=0)
 
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
