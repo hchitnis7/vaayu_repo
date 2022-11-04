@@ -39,17 +39,16 @@ while True:
     full_meow = cv2.bitwise_and(frame, frame, mask=full_coul)
     frame_gaussian = cv2.GaussianBlur(full_coul, (5, 5), 2, 2)
 
-    circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+    circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, 100, param1=100, param2=30, minRadius=10, maxRadius=100)
     if circles is not None:
-        circles = np.round(circles[0, :]).astype("int")
-        cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
-        #cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
         circles = np.uint16(np.around(circles))
-        for i in circles[0, :]:
-            # draw the outer circle
-            cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
-            # draw the center of the circle
-            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+        for i in circles:
+            cv2.circle(frame, center=(circles[i, 0], circles[i, 1]), radius=circles[i, 2], color=(0, 0, 0),
+                           thickness=2)
+            cv2.putText(frame, 'Diameter : ' + str(2 * circles[i, 2]), (0, 20), cv2.FONT_HERSHEY_COMPLEX,
+                            0.5, (0, 0, 0))
+        #cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
     cv2.imshow("sab ka baap", full_meow)
     cv2.imshow("chutiya", frame)
 
