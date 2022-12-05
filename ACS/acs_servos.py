@@ -27,9 +27,9 @@ def main():
             pitchdown()
 
 def roll():
-    move_servo(0,0)
+    move_servo(0,90)
     angle1 = int(input("Enter the angle: "))
-    if angle1-90<0:
+
         move_servo(angle1, 90 - angle1)
     else:
         move_servo(angle1, angle1-90)

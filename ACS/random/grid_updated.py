@@ -1,6 +1,7 @@
 import cv2
 #import pyautogui
 #import imutils
+import numpy
 import numpy as np
 
 # width,height = pyautogui.size()
@@ -75,7 +76,7 @@ def showDirection(circle_x, circle_y, x, y):
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, height)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, width)
 """
-
+global slope
 
 def grid(col):
     color = colour_ranges[col]
@@ -99,21 +100,24 @@ def grid(col):
         #frame_lab = cv2.inRange(HSV_frame, lower, upper)
         frame_gaussian = cv2.GaussianBlur(full_coul_mask, (5, 5), 2, 2)
         circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+        output_frame = cv2.bitwise_and(frame_2, frame_2, mask=full_coul_mask)
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
             cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
-            showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
-        output_frame = cv2.bitwise_and(frame_2, frame_2, mask=full_coul_mask)
-        contours, heirarchy = cv2.findContours(full_coul_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            #showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
+            slope = (width // 2 - circles[0, 0]) / (height // 2 - circles[0, 1])
+            cv2.putText(output_frame, "theta : " + str(numpy.arctan(slope)), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
+            print(numpy.arctan(slope)*(180/3.141592653))
+        """contours, heirarchy = cv2.findContours(full_coul_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
                 if cv2.contourArea(contour) > 10:
                     x, y, w, h = cv2.boundingRect(contour)
-                    """x = x + 10
+                    x = x + 10
                     y = y + 10
                     w = w + 10
-                    h = h + 10"""
+                    h = h + 10
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
                     pts1 = np.float32([[x, y], [x + w, y], [x, y + h], [x + w, y + h]])
                     pts2 = np.float32([[0, 0], [250, 0], [0, 250], [250, 250]])
@@ -121,7 +125,8 @@ def grid(col):
                     dst = cv2.warpPerspective(HSV_frame, M, (300, 300))
                     DST_BGR = cv2.cvtColor(dst, cv2.COLOR_HSV2BGR)
 
-                    cv2.imshow("", DST_BGR)
+                    cv2.imshow("", DST_BGR)"""
+
         cv2.imshow("Frame", frame)
         cv2.imshow("Output", output_frame)
         if key == 27:

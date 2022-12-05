@@ -30,7 +30,7 @@ def colour_det(colour_in):
                     pts1 = np.float32([[x, y], [x + w, y], [x, y + h], [x + w, y + h]])
                     pts2 = np.float32([[0, 0], [250, 0], [0, 250], [250, 250]])
                     M = cv2.getPerspectiveTransform(pts1, pts2)
-                    dst = cv2.warpPerspective(HSV_frame, M, (300, 300))
+                    dst = cv2.warpPerspective(HSV_frame, M, (0, 0))
                     cv2.imshow("", dst)
                     mask = cv2.inRange(dst, low_bound, high_bound)
                     dst = cv2.cvtColor(dst, cv2.COLOR_HSV2BGR)
