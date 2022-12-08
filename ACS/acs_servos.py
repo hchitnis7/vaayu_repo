@@ -27,23 +27,21 @@ def main():
             pitchdown()
 
 def roll():
-    move_servo(0,90)
-    angle1 = int(input("Enter the angle: "))
-
-        move_servo(angle1, 90 - angle1)
+    angle1 = int(input("Enter the angle(-45, 45): "))
+    if angle1<0:
+        move_servo(90 + angle1, 180 + angle1)
+        move_servo(90, 90)
     else:
-        move_servo(angle1, angle1-90)
+        move_servo(180 - angle1, 90 - angle1)
 
 
 def pitchup():
-    move_servo(0,0)
-    angle1 = int(input("Enter the angle: "))
+    angle1 = int(input("Enter the angle(0-45): "))
     move_servo(angle1, angle1)
+    move_servo(90, 90)
+
+
 def pitchdown():
-    move_servo(0,0)
-    angle1 = int(input("Enter the angle: "))
-    move_servo(90-angle1,90 - angle1)
-
-
-main()
-
+    angle1 = int(input("Enter the angle(0, 45): "))
+    move_servo(180-angle1, 180 - angle1)
+    move_servo(90, 90)
