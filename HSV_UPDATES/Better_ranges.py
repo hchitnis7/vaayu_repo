@@ -48,7 +48,7 @@ while True:
 
     elif colour == 2:
         # blue
-        low_blue = np.array([94, 80, 2])
+        low_blue =  np.array([94, 80, 2])
         high_blue = np.array([126, 255, 255])
         blue_mask = cv2.inRange(hsv_frame, low_blue, high_blue)
         blue = cv2.bitwise_and(frame, frame, mask=blue_mask)
