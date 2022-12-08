@@ -2,6 +2,7 @@ import cv2
 #import pyautogui
 #import imutils
 import numpy
+import math
 import numpy as np
 
 # width,height = pyautogui.size()
@@ -49,17 +50,16 @@ def showDirection(circle_x, circle_y, x, y):
         print('Cirlce is in 4th Quadrant')
     else:
         print("error")
-
-
-def show_inner (c_x, c_y, x, y):
-    if(c_x < x and c_y > y):
-        print('circle withibn bounds')
+    """if(c_y > height - x // 2 and c_y < height + x //2 and c_x > width - y // 2 and c_x < width + y // 2):
+        print('circle withibn bounds')"""
 
 """
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, height)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, width)
 """
 global slope
+global height
+global width
 
 def grid(col):
     color = colour_ranges[col]
@@ -83,8 +83,10 @@ def grid(col):
         new_cropped = cv2.bitwise_and(frame_2, frame_2, mask=cropped_image_mask)
         new_cropped_hsv = cv2.cvtColor(new_cropped, cv2.COLOR_BGR2HSV)
         HSV_frame = cv2.cvtColor(frame_2, cv2.COLOR_BGR2HSV)
+
         coul_mask_1 = cv2.inRange(HSV_frame, low_coul_1, high_coul_1)
         coul_mask_2 = cv2.inRange(HSV_frame, low_coul_2, high_coul_2)
+
         c_m_a = cv2.inRange(new_cropped_hsv, low_coul_1, high_coul_1)
         c_m_b = cv2.inRange(new_cropped_hsv, low_coul_2, high_coul_2)
         full_coul_mask =  c_m_b + c_m_a
@@ -100,10 +102,10 @@ def grid(col):
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
             cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
             showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
-            show_inner(circles[0, 0], circles[0, 1], width // 2, height // 2)
+            #show_inner(circles[0, 0], circles[0, 1], width // 2, height // 2)
             slope = (width // 2 - circles[0, 0]) / (height // 2 - circles[0, 1])
             cv2.putText(output_frame, "theta : " + str(numpy.arctan(slope)), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
-            print(numpy.arctan(slope)*(180/3.141592653))
+            print(math.atan(slope)*(180 / math.pi))
         """contours, heirarchy = cv2.findContours(full_coul_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
