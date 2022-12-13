@@ -16,10 +16,10 @@ colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [7, 255,
 
 
 def centre_grid(frame, h, w):
-    cv2.line(frame, (w // 5, 0), (w // 5, h), (120, 0, 0), 3)
-    cv2.line(frame, (w // 5, h // 5), (w - w // 5, h // 5), (120, 0, 0), 3)
-    cv2.line(frame, (w - w // 5, 0), (w - w // 5, h), (120, 0, 0), 3)
-    cv2.line(frame, (w // 5, h - h // 5), (w - w // 5, h - h // 5), (120, 0, 0), 3)
+    cv2.line(frame, (3*w // 10, 0), (3*w // 10, h), (120, 0, 0), 3)
+    cv2.line(frame, (3*w // 10, 3*h // 10), (w - 3*w // 10, 3*h // 10), (120, 0, 0), 3)
+    cv2.line(frame, (w - 3*w // 10, 0), (w - 3*w // 10, h), (120, 0, 0), 3)
+    cv2.line(frame, (3*w // 10, h - 3*h // 10), (w - 3*w // 10, h - 3*h // 10), (120, 0, 0), 3)
     """cv2.line(frame, (w + w // 2, h), (w + w // 2, h + h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w, h + h // 2), (w + w // 2, h + h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w + w // 2, h // 2), (w + w // 2, h), (120, 0, 0), 3)
@@ -35,14 +35,12 @@ def centre_grid(frame, h, w):
 
 def show_nav(cir_x, cir_y, width, height):
 
-    if(cir_x >= width - width // 5):
-        print("left down right up (MOVE LEFT)")
-    elif(cir_y <= height//5 and cir_x >= width // 5 and cir_x <= width - width // 5):
-        print("both up (MOVE DOWN)")
-    elif(cir_x <= width//5):
-        print("left up right down (MOVE RIGHT)")
-    elif(cir_y >= height - height // 5 and cir_x >= width // 5 and cir_x <= width - width // 5):
-        print("Both down (MOVE UP)")
+    if(cir_x >= width - 3*width // 10):
+        print("left down right up (MOVE RIGHT)")
+    elif(cir_x <= 3*width//10):
+        print("left up right down (MOVE LEFT)")
+    elif(cir_y >= height - 3*height // 10 and cir_x >= 3*width // 10 and cir_x <= width - 3*width // 10):
+        print("Both down (MOVE DOWN)")
     else:
         print("circle aligned or not found")
     return
@@ -83,10 +81,10 @@ def grid(col):
     while True:
         key = cv2.waitKey(1)
         _, frame = cap.read()
-        _, frame_2 = cap.read()
+        #_, frame_2 = cap.read()
         height = frame.shape[0]
         width = frame.shape[1]
-        centre_grid(frame, height, width)
+        #centre_grid(frame, height, width)
         """cropped_image_mask = np.zeros(frame.shape[:2], dtype="uint8")
         cv2.rectangle(cropped_image_mask, (w // 2, h // 2), (w + w // 2, h + h // 2), 255, -1)
         new_cropped = cv2.bitwise_and(frame_2, frame_2, mask=cropped_image_mask)
@@ -104,7 +102,7 @@ def grid(col):
         #frame_lab = cv2.inRange(HSV_frame, lower, upper)
         frame_gaussian = cv2.GaussianBlur(full_coul_mask, (5, 5), 2, 2)
         circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=50)
-        output_frame = cv2.bitwise_and(frame_2, frame_2, mask=full_coul_mask)
+        output_frame = cv2.bitwise_and(frame, frame, mask=full_coul_mask)
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
