@@ -4,7 +4,9 @@ import cv2
 import numpy
 import math
 import numpy as np
-
+global slope
+global height
+global width
 # width,height = pyautogui.size()
 cap = cv2.VideoCapture(1)
 
@@ -34,7 +36,7 @@ def centre_grid(frame, height, width):
     return
 
 
-def show_nav(cir_x, cir_y):
+def show_nav(cir_x, cir_y, width, height):
 
     if(cir_x >= width - width // 4):
         print("left down right up")
@@ -73,9 +75,7 @@ def showDirection(circle_x, circle_y, x, y):
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, height)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, width)
 """
-global slope
-global height
-global width
+
 
 def grid(col):
     color = colour_ranges[col]
@@ -118,7 +118,7 @@ def grid(col):
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
             cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
             showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
-            show_nav(circles[0, 0], circles[0, 1])
+            show_nav(circles[0, 0], circles[0, 1], width, height)
             #show_inner(circles[0, 0], circles[0, 1], width // 2, height // 2)
             slope = (width // 2 - circles[0, 0]) / (height // 2 - circles[0, 1])
             cv2.putText(output_frame, "theta : " + str(numpy.arctan(slope)), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
