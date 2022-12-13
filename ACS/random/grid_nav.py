@@ -39,13 +39,13 @@ def centre_grid(frame, height, width):
 def show_nav(cir_x, cir_y, width, height):
 
     if(cir_x >= width - width // 4):
-        print("left down right up")
+        print("left down right up MOVE LEFT")
     elif(cir_y <= height//4):
-        print("both up")
+        print("both up MOVE UP")
     elif(cir_x <= width//4):
-        print("left up right down")
+        print("left up right down MOVE RIGHT")
     elif(cir_y >= height - height // 4):
-        print("Both down")
+        print("Both down MOVE DOWN")
     else:
         print("circle alligned or not found")
     return
@@ -106,7 +106,7 @@ def grid(col):
         c_m_a = cv2.inRange(new_cropped_hsv, low_coul_1, high_coul_1)
         c_m_b = cv2.inRange(new_cropped_hsv, low_coul_2, high_coul_2)
         full_coul_mask =  c_m_b + c_m_a + coul_mask_2 + coul_mask_1
-        kernel = np.ones((7, 7), np.uint8)
+        kernel = np.ones((10, 10), np.uint8)
         full_coul_mask = cv2.erode(full_coul_mask, kernel)
 
         cv2.imshow("cropped frame", new_cropped)
