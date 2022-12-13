@@ -1,13 +1,11 @@
 import cv2
-#import pyautogui
-#import imutils
 import numpy
 import math
 import numpy as np
 global slope
 global height
 global width
-# width,height = pyautogui.size()
+
 cap = cv2.VideoCapture(1)
 
 colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [7, 255, 255]],
@@ -17,15 +15,12 @@ colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [7, 255,
                  "ORANGE": [[10, 100, 20], [25, 255, 255], [0, 0, 0], [0, 0, 0]]}
 
 
-def frame_grid(frame, height, width):
-    cv2.line(frame, (0, height // 2), (width, height // 2), (255, 0, 0), 3)
-    cv2.line(frame, (width // 2, 0), (width // 2, height), (255, 0, 0), 3)
-    return
-
-def centre_grid(frame, height, width):
-    h = height // 2
-    w = width // 2
-    cv2.line(frame, (w + w // 2, h), (w + w // 2, h + h // 2), (120, 0, 0), 3)
+def centre_grid(frame, h, w):
+    cv2.line(frame, (w // 5, 0), (w // 5, h), (120, 0, 0), 3)
+    cv2.line(frame, (w // 5, h // 5), (w - w // 5, h // 5), (120, 0, 0), 3)
+    cv2.line(frame, (w - w // 5, 0), (w - w // 5, h), (120, 0, 0), 3)
+    cv2.line(frame, (w // 5, h - h // 5), (w - w // 5, h - h // 5), (120, 0, 0), 3)
+    """cv2.line(frame, (w + w // 2, h), (w + w // 2, h + h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w, h + h // 2), (w + w // 2, h + h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w + w // 2, h // 2), (w + w // 2, h), (120, 0, 0), 3)
     cv2.line(frame, (w, h // 2), (w + w // 2, h // 2), (120, 0, 0), 3)
@@ -33,21 +28,23 @@ def centre_grid(frame, height, width):
     cv2.line(frame, (w // 2, h + h // 2), (3 * w // 2, h + h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w // 2, h // 2), (w, h // 2), (120, 0, 0), 3)
     cv2.line(frame, (w // 2, h // 2), (w // 2, h), (120, 0, 0), 3)
+    cv2.line(frame, (0, height // 2), (width, height // 2), (255, 0, 0), 3)
+    cv2.line(frame, (width // 2, 0), (width // 2, height), (255, 0, 0), 3)"""
     return
 
 
 def show_nav(cir_x, cir_y, width, height):
 
-    if(cir_x >= width - width // 4):
-        print("left down right up MOVE LEFT")
-    elif(cir_y <= height//4):
-        print("both up MOVE UP")
-    elif(cir_x <= width//4):
-        print("left up right down MOVE RIGHT")
-    elif(cir_y >= height - height // 4):
-        print("Both down MOVE DOWN")
+    if(cir_x >= width - width // 5):
+        print("left down right up (MOVE LEFT)")
+    elif(cir_y <= height//5 and cir_x >= width // 5 and cir_x <= width - width // 5):
+        print("both up (MOVE DOWN)")
+    elif(cir_x <= width//5):
+        print("left up right down (MOVE RIGHT)")
+    elif(cir_y >= height - height // 5 and cir_x >= width // 5 and cir_x <= width - width // 5):
+        print("Both down (MOVE UP)")
     else:
-        print("circle alligned or not found")
+        print("circle aligned or not found")
     return
 
 
@@ -89,28 +86,21 @@ def grid(col):
         _, frame_2 = cap.read()
         height = frame.shape[0]
         width = frame.shape[1]
-        h = height // 2
-        w = width // 2
-        # frame = imutils.resize(frame, width=width,height=height)
-        frame_grid(frame, height, width)
         centre_grid(frame, height, width)
-        cropped_image_mask = np.zeros(frame.shape[:2], dtype="uint8")
+        """cropped_image_mask = np.zeros(frame.shape[:2], dtype="uint8")
         cv2.rectangle(cropped_image_mask, (w // 2, h // 2), (w + w // 2, h + h // 2), 255, -1)
         new_cropped = cv2.bitwise_and(frame_2, frame_2, mask=cropped_image_mask)
-        new_cropped_hsv = cv2.cvtColor(new_cropped, cv2.COLOR_BGR2HSV)
-        HSV_frame = cv2.cvtColor(frame_2, cv2.COLOR_BGR2HSV)
+        new_cropped_hsv = cv2.cvtColor(new_cropped, cv2.COLOR_BGR2HSV)"""
+        HSV_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         coul_mask_1 = cv2.inRange(HSV_frame, low_coul_1, high_coul_1)
         coul_mask_2 = cv2.inRange(HSV_frame, low_coul_2, high_coul_2)
 
-        c_m_a = cv2.inRange(new_cropped_hsv, low_coul_1, high_coul_1)
-        c_m_b = cv2.inRange(new_cropped_hsv, low_coul_2, high_coul_2)
-        full_coul_mask =  c_m_b + c_m_a + coul_mask_2 + coul_mask_1
+        full_coul_mask = coul_mask_2 + coul_mask_1
         kernel = np.ones((10, 10), np.uint8)
         full_coul_mask = cv2.erode(full_coul_mask, kernel)
-
-        cv2.imshow("cropped frame", new_cropped)
-        HSV_frame = cv2.medianBlur(HSV_frame, 3)
+        #cv2.imshow("cropped frame", new_cropped)
+        full_coul_mask = cv2.medianBlur(full_coul_mask, 3)
         #frame_lab = cv2.inRange(HSV_frame, lower, upper)
         frame_gaussian = cv2.GaussianBlur(full_coul_mask, (5, 5), 2, 2)
         circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=50)
