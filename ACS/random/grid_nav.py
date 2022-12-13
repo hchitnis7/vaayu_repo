@@ -106,12 +106,14 @@ def grid(col):
         c_m_a = cv2.inRange(new_cropped_hsv, low_coul_1, high_coul_1)
         c_m_b = cv2.inRange(new_cropped_hsv, low_coul_2, high_coul_2)
         full_coul_mask =  c_m_b + c_m_a + coul_mask_2 + coul_mask_1
+        kernel = np.ones((7, 7), np.uint8)
+        full_coul_mask = cv2.erode(full_coul_mask, kernel)
 
         cv2.imshow("cropped frame", new_cropped)
         HSV_frame = cv2.medianBlur(HSV_frame, 3)
         #frame_lab = cv2.inRange(HSV_frame, lower, upper)
         frame_gaussian = cv2.GaussianBlur(full_coul_mask, (5, 5), 2, 2)
-        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=100)
+        circles = cv2.HoughCircles(frame_gaussian, cv2.HOUGH_GRADIENT, 1, frame_gaussian.shape[0] / 8, param1=100, param2=18, minRadius=10, maxRadius=50)
         output_frame = cv2.bitwise_and(frame_2, frame_2, mask=full_coul_mask)
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
