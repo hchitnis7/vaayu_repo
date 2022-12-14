@@ -112,7 +112,7 @@ def grid(col):
             #show_inner(circles[0, 0], circles[0, 1], width // 2, height // 2)
             slope = (width // 2 - circles[0, 0]) / (height // 2 - circles[0, 1])
             cv2.putText(output_frame, "theta : " + str(numpy.arctan(slope)), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
-            print(math.atan(slope)*(180 / math.pi))
+            #print(math.atan(slope)*(180 / math.pi))
         """contours, heirarchy = cv2.findContours(full_coul_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
