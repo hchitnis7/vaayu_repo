@@ -5,9 +5,10 @@ cap = cv2.VideoCapture(1)
 
 colour_ranges = {"RED": [[170, 85, 110], [180, 255, 255], [0, 85, 110], [7, 255, 255]],
                  "BLUE": [[94, 80, 2], [126, 255, 255], [0, 0, 0], [0, 0, 0]],
-                 "GREEN": [[49, 30, 45], [85, 255, 255], [0, 0, 0], [0, 0, 0]],
+                 "PURPLE": [[129, 80, 10], [150, 255, 255], [0, 0, 0], [0, 0, 0]],
                  "YELLOW": [[15, 40, 50], [40, 255, 255], [0, 0, 0], [0, 0, 0]],
                  "ORANGE": [[10, 100, 20], [25, 255, 255], [0, 0, 0], [0, 0, 0]]}
+
 
 def grid(col):
     color = colour_ranges[col]
@@ -41,7 +42,7 @@ def grid(col):
             break
 
 
-print('1. Red \n2. Blue \n3. Green \n4. Yellow \n5. Orange')
+print('1. Red \n2. Blue \n3. Purple \n4. Yellow \n5. Orange')
 ch = int(input('Enter : '))
 keys = list(colour_ranges.keys())
 grid(keys[ch - 1])
