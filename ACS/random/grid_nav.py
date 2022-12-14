@@ -36,18 +36,18 @@ def centre_grid(frame, h, w):
 def show_nav(cir_x, cir_y, width, height):
 
     if(cir_x >= width - 3*width // 10):
-        print("left down right up (MOVE RIGHT)")
+        print("left down right up (MOVE RIGHT)\n RIGHT BOX")
     elif(cir_x <= 3*width//10):
-        print("left up right down (MOVE LEFT)")
+        print("left up right down (MOVE LEFT) \n LEFT BOX")
     elif(cir_y >= height - 3*height // 10 and cir_x >= 3*width // 10 and cir_x <= width - 3*width // 10):
-        print("Both down (MOVE DOWN)")
+        print("Both down (MOVE DOWN)\n BOTTOM BOX")
     else:
         print("circle aligned or not found")
     return
 
 
 
-def showDirection(circle_x, circle_y, x, y):
+"""def showDirection(circle_x, circle_y, x, y):
     if (circle_x == 0 and circle_y == 0):
         print("cicle is aligned")
     elif (circle_x <= x and circle_y <= y):
@@ -63,7 +63,7 @@ def showDirection(circle_x, circle_y, x, y):
         print('Cirlce is in 4th Quadrant')
     else:
         print("error")
-    """if(c_y > height - x // 2 and c_y < height + x //2 and c_x > width - y // 2 and c_x < width + y // 2):
+    if(c_y > height - x // 2 and c_y < height + x //2 and c_x > width - y // 2 and c_x < width + y // 2):
         print('circle withibn bounds')"""
 
 """
@@ -107,7 +107,7 @@ def grid(col):
             circles = np.round(circles[0, :]).astype("int")
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
             cv2.line(frame, (circles[0, 0], circles[0, 1]), (width // 2, height // 2), (0, 255, 0), 3)
-            showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
+            #showDirection(circles[0, 0], circles[0, 1], width // 2, height // 2)
             show_nav(circles[0, 0], circles[0, 1], width, height)
             #show_inner(circles[0, 0], circles[0, 1], width // 2, height // 2)
             slope = (width // 2 - circles[0, 0]) / (height // 2 - circles[0, 1])

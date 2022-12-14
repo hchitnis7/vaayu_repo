@@ -18,8 +18,7 @@ def grid(col):
     while True:
         key = cv2.waitKey(1)
         _, frame = cap.read()
-        height = frame.shape[0]
-        width = frame.shape[1]
+
         HSV_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         coul_mask_1 = cv2.inRange(HSV_frame, low_coul_1, high_coul_1)
@@ -37,7 +36,7 @@ def grid(col):
             cv2.circle(frame, center=(circles[0, 0], circles[0, 1]), radius=circles[0, 2], color=(0, 0, 0), thickness=2)
             cv2.putText(output_frame, 'Diameter : ' + str(2 * circles[0, 2]), (0, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
         cv2.imshow("Frame", frame)
-        cv2.imshow("Output", output_frame)
+        #cv2.imshow("Output", output_frame)
         if key == 27:
             break
 
