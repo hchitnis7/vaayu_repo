@@ -3,9 +3,9 @@ import numpy as np
 
 cap = cv2.VideoCapture(1)
 print("Which colour do you want to display?")
-colour = int(input("1 = red \n2:blue\n3: green\n4:yellow\n5:orange \n6:colour mask"))
+colour = int(input("1 = red \n2:blue\n3: violet\n4:yellow\n5:orange \n6:colour mask"))
 global full_red
-global full_green
+global full_violet
 global full_blue
 global full_yellow
 global full_orange
@@ -62,20 +62,20 @@ while True:
         full_blue = blue_mask
         cv2.imshow("Blue mask", blue)
     elif colour == 3:
-        # green
-        low_green = np.array([49, 30, 45])
-        high_green = np.array([85, 255, 255])
-        green_mask = cv2.inRange(hsv_frame, low_green, high_green)
-        green = cv2.bitwise_and(frame, frame, mask=green_mask)
-        contours, heirarchy = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # violet
+        low_violet = np.array([130, 40, 60])
+        high_violet = np.array([140, 255, 255])
+        violet_mask = cv2.inRange(hsv_frame, low_violet, high_violet)
+        violet = cv2.bitwise_and(frame, frame, mask=violet_mask)
+        contours, heirarchy = cv2.findContours(violet_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
             for contour in contours:
                 if cv2.contourArea(contour) > 500:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
-        full_green = green_mask
-        cv2.imshow("green mask", green)
+        full_violet = violet_mask
+        cv2.imshow("violet mask", violet)
     elif colour == 4:
         # yellow
         low_yellow = np.array([30, 40, 50])
@@ -93,7 +93,8 @@ while True:
         full_yellow = yellow_mask
     elif colour == 5:
         # orange
-        low_orange = np.array([9, 90, 90])
+        low_orange = np.array([7, 90, 305
+                               ])
         high_orange = np.array([11, 255, 255])
         orange_mask = cv2.inRange(hsv_frame, low_orange, high_orange)
         orange = cv2.bitwise_and(frame, frame, mask=orange_mask)
@@ -105,7 +106,7 @@ while True:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
         cv2.imshow("Frame", frame)
         full_orange = orange_mask
-        #cv2.imshow("orange mask", orange)
+        cv2.imshow("orange mask", orange)
     else:
         # all but white
         low = np.array([0, 42, 0])

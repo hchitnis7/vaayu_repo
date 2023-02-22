@@ -131,6 +131,7 @@ def grid(col):
 
                     cv2.imshow("", DST_BGR)"""
 
+        centre_grid(frame, height, width)
         cv2.imshow("Frame", frame)
         cv2.imshow("Output", output_frame)
         if key == 27:
